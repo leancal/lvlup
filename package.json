@@ -1,0 +1,30 @@
+{
+  "name": "web-game",
+  "version": "1.0.1",
+  "scripts": {
+    "start": "serve",
+    "build": "webpack --mode=production"
+  },
+  "author": "SuperSolik",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SuperSolik/web-game-js/issues"
+  },
+  "homepage": "https://github.com/SuperSolik/web-game-js#readme",
+  "devDependencies": {
+    "babel-core": "^4.7.16",
+    "babel-loader": "^8.1.0",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^5.76.0",
+    "webpack-cli": "^4.1.0"
+  },
+  "dependencies": {
+    "firebase": "^10.12.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "serve": "^14.2.0"
+  },
+  "description": "JS shoot'em up game made for LETI web programming course.   ![game](https://user-images.githubusercontent.com/31539612/74675270-3e5ddc80-51c4-11ea-8dce-8b1884649ee2.gif)     * move on WASD * shoot on left mouse click   * no hp, 1 hit for kill, whether it's a player or enemy * 2 levels   ### Dependencies:     npm   ### Setup:   ``` npm install npm run build npm start ```   Game would be available at `localhost:3000`",
+  "main": "firebase-config.js",
+  "keywords": []
+}
