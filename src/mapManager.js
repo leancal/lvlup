@@ -1,12 +1,12 @@
-import {Enemy, Player, Vec} from "./entities";
+import { Enemy, Player, Vec } from "./entities";
 
 export class MapManager {
   constructor() {
     this.mapData = null;
     this.xCount = 0;
     this.yCount = 0;
-    this.tSize = {x: 32, y: 32};
-    this.mapSize = {x: 32, y: 32};
+    this.tSize = { x: 32, y: 32 };
+    this.mapSize = { x: 32, y: 32 };
     this.tilesets = [];
     this.imgLoadCount = 0;
     this.imgLoaded = false;
@@ -50,37 +50,65 @@ export class MapManager {
       img.src = this.mapData.tilesets[i].image;
       let t = this.mapData.tilesets[i];
       let ts = {
-        firstgid: t.firstgid, image: img, name: t.name, xCount: Math.floor(t.imagewidth / this.tSize.x),
-        yCount: Math.floor(t.imageheight / this.tSize.y)
+        firstgid: t.firstgid,
+        image: img,
+        name: t.name,
+        xCount: Math.floor(t.imagewidth / this.tSize.x),
+        yCount: Math.floor(t.imageheight / this.tSize.y),
       };
       this.tilesets.push(ts);
     }
-    this.topLayer = this.mapData.layers.find(l => l.name === "top");
-    this.middleLayer = this.mapData.layers.find(l => l.name === "middle");
-    this.bottomLayer = this.mapData.layers.find(l => l.name === "bottom");
+    this.topLayer = this.mapData.layers.find((l) => l.name === "top");
+    this.middleLayer = this.mapData.layers.find((l) => l.name === "middle");
+    this.bottomLayer = this.mapData.layers.find((l) => l.name === "bottom");
     this.jsonLoaded = true;
   }
 
   isWall(x, y) {
     let wX = Math.floor(x / 2);
     let wY = Math.floor(y / 2);
-    let idx = Math.floor(wY / this.tSize.y) * this.xCount + Math.floor(wX / this.tSize.x);
+    let idx =
+      Math.floor(wY / this.tSize.y) * this.xCount +
+      Math.floor(wX / this.tSize.x);
     let tileId = this.middleLayer.data[idx];
-    const wallId = [34, 257, 258, 199, 101, 37, 597, 291, 292, 259, 260, 483, 484];
-    return wallId.find(id => id === tileId);
+    const wallId = [
+      289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 259, 260, 310, 311, 312,
+      313, 314, 315, 316, 317, 318, 319, 396, 405, 364, 373, 332, 341, 428, 437,
+      460, 469, 492, 493, 494, 499, 500, 501, 464, 465, 994, 995, 996, 997, 998,
+      999, 1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1010,
+      1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1020, 1021, 1022,
+      1023,
+    ];
+    return wallId.find((id) => id === tileId);
   }
 
   isExit(x, y) {
     let wX = Math.floor(x / 2);
     let wY = Math.floor(y / 2);
-    let idx = Math.floor(wY / this.tSize.y) * this.xCount + Math.floor(wX / this.tSize.x);
+    let idx =
+      Math.floor(wY / this.tSize.y) * this.xCount +
+      Math.floor(wX / this.tSize.x);
     let tileId = this.middleLayer.data[idx];
-    return tileId === 483 || tileId === 484;
+    
+    if (tileId === 464 || tileId === 465) {
+      return true; // Regular exit
+    } else if (tileId === 1008 || tileId === 1009) {
+      this.handleWarning(); // Show warning and reload page
+      return false;
+    }
+    
+    return false;
+  }
+
+  handleWarning() {
+    window.showWarning(); // Call the function defined in the HTML
   }
 
   getTile(tileIndex) {
     let tile = {
-      img: null, px: 0, py: 0
+      img: null,
+      px: 0,
+      py: 0,
     };
     let tileset = this.getTileset(tileIndex);
     tile.img = tileset.image;
@@ -101,24 +129,28 @@ export class MapManager {
   }
 
   parseObjects(mapData, objects) {
-    const objectLayer = mapData.layers.find(l => l.type === "objectgroup");
+    const objectLayer = mapData.layers.find((l) => l.type === "objectgroup");
     for (let object of objectLayer.objects) {
       if (object.type === "player") {
-        objects.unshift(new Player(
-          new Vec(object.x * 2, object.y * 2),
-          new Vec(0, 0),
-          32, 64,
-          "knight_f_run_anim"
-        ));
+        objects.unshift(
+          new Player(
+            new Vec(object.x * 2, object.y * 2),
+            new Vec(0, 0),
+            32,
+            64,
+            "knight_f_run_anim"
+          )
+        );
       }
 
       if (object.type === "enemy") {
-        let isShotgunProp = object.properties.find(p => p.name === "shotgun");
-        let spriteProp = object.properties.find(p => p.name === "sprite");
+        let isShotgunProp = object.properties.find((p) => p.name === "shotgun");
+        let spriteProp = object.properties.find((p) => p.name === "sprite");
         const e = new Enemy(
           new Vec(object.x * 2, object.y * 2),
           new Vec(0, 0),
-          32, 64,
+          32,
+          64,
           spriteProp.value
         );
         e.hasShotgun = isShotgunProp.value;
