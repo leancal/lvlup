@@ -1,10 +1,10 @@
 {
   "name": "web-game",
   "version": "1.0.1",
-  "scripts": {
-    "start": "serve",
-    "build": "webpack --mode=production"
-  },
+ "scripts": {
+  "start": "node server.js",
+  "build": "webpack --mode production"
+},
   "author": "SuperSolik",
   "license": "MIT",
   "bugs": {
