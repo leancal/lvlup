@@ -1,28 +1,27 @@
 const path = require('path');
 
 module.exports = {
-  entry: [
-    './src/index.js',
-  ],
+  entry: './src/index.js',
   output: {
-    filename: './game.min.js'
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'game.min.js'
   },
   module: {
-    rules: [{
-      test: /\.js$/,
-      include: path.resolve(__dirname, 'public'),
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: 'env'
+    rules: [
+      {
+        test: /\.js$/,
+        include: path.resolve(__dirname, 'src'),
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['env']
+          }
         }
       }
-    },
     ]
   },
-  plugins: [
-  ],
+  plugins: [],
   optimization: {
-    minimize: true,
+    minimize: true
   }
 };
